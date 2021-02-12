@@ -1,0 +1,27 @@
+<div class="input-group">
+    <span class="input-group-btn">
+        <button (click)="changeValue(-5)"
+                [ngClass]="btnClass"
+                type="button">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+        </button>
+    </span>
+
+    <!-- Para usar ngModel, acordarse de importar en FormsModule en el "page.module" -->
+    <input type="number"
+           class="form-control"
+           [ngClass]="{'is-invalid': value > 100 || value < 0}"
+           placeholder="Product name"
+           min="0"
+           max="100"
+           (ngModelChange)="onChange($event)"
+           [(ngModel)]="value">
+
+    <span class="input-group-btn">
+        <button (click)="changeValue(5)"
+                [ngClass]="btnClass"
+                type="button">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+    </span>
+</div>

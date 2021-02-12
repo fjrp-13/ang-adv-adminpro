@@ -1,1 +1,39 @@
-<p>grafica1 works!</p>
+<div class="row">
+    <div class="col-6">
+        <app-graph-doughnut
+                            [title]="graph1Title"
+                            [labels]="graph1Labels"
+                            [data]="graph1Data"
+                            [colors]="graph1Colors">
+        </app-graph-doughnut>
+    </div>
+
+    <div class="col-6">
+        <app-graph-doughnut
+                            [title]="graph2Title"
+                            [labels]="graph2Labels"
+                            [data]="graph2Data"
+                            [colors]="graph2Colors">
+        </app-graph-doughnut>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <app-graph-doughnut
+                            [title]="graph3Title"
+                            [labels]="graph3Labels"
+                            [data]="graph3Data"
+                            [colors]="graph3Colors">
+        </app-graph-doughnut>
+    </div>
+
+    <div class="col-6">
+        <app-graph-doughnut
+                            title="Ventas 4"
+                            [labels]="['Label 4.1', 'Label 4.2', 'Label 4.3']"
+                            [data]="[1350, 1450, 1100]"
+                            [colors]="['#6857E6', '#009FEE', '#F02059']">
+            ></app-graph-doughnut>
+    </div>
+</div>
