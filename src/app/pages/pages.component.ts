@@ -1,4 +1,11 @@
+import { getSyntheticPropertyName } from '@angular/compiler/src/render3/util';
+import { trimTrailingNulls } from '@angular/compiler/src/render3/view/util';
 import { Component, OnInit } from '@angular/core';
+import { SettingsService } from '../services/settings.service';
+
+
+// Le indicamos a Angular que "confíe" que esta función existe (está declarada de forma global en "src/custom.js")
+declare function customInitFunctions();
 
 @Component({
   selector: 'app-pages',
@@ -7,10 +14,11 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class PagesComponent implements OnInit {
-
-  constructor() { }
-
+  
+  constructor( private settingsService: SettingsService) { }
+  
   ngOnInit(): void {
+    customInitFunctions();
   }
 
 }
