@@ -6,6 +6,21 @@
     animation-fill-mode:both
 }
 
-#themecolors a.selector {
+#themecolors a.selector, .clickable {
     cursor: pointer;
+}
+
+.validate {
+    color: #e00000 !important;
+    font-size: 0.75em;
+}
+.validate.validate-error {
+    display: inline-block !important;
+}
+
+#google-btn {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
