@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, resolveForwardRef } from '@angular/core';
 import { tap, map, catchError } from 'rxjs/operators'; // tap: dispara un "efecto secundario" (como añadir un paso extra)
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
+import { Usuario } from '../models/usuario.model';
 
 const api_base_url = environment.api_base_url;
 
@@ -21,6 +22,7 @@ declare const gapi:any;
 
 export class UsuarioService {
   public auth2: any; // Para Google Sign-in
+  public usuarioLogeado: Usuario;
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -29,11 +31,22 @@ export class UsuarioService {
     this.initGoogleAuth();
   }
 
+  get token(): string {
+    return localStorage.getItem('token') || '';;
+  }
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${ api_base_url }/usuarios`, formData)
     .pipe(tap(resp => {
       localStorage.setItem('token', resp['token']);
     }));
+  }
+
+  actualizarPerfil(data:{ email: string, nombre: string }) {
+    return this.http.put(`${ api_base_url }/usuarios/${ this.usuarioLogeado.uid }`, data, {
+      headers: {
+        'x-token': this.token
+      }
+    });
   }
 
   // https://developers.google.com/identity/sign-in/web/build-button
@@ -80,20 +93,24 @@ export class UsuarioService {
   }
 
   validateToken():Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
     return this.http.get(`${ api_base_url }/login/renew`, {
       headers: {
-        'x-token': token
+        'x-token': this.token
       }
     })
     .pipe(
-      tap(resp => {
+      map((resp) => {
+        const { nombre, email, img, google, role, uid } = resp['usuario'];
+        // Instanciamos el usuario Logeado con el usuario devuelto 
+        this.usuarioLogeado = new Usuario(nombre, email, '', img, google, role, uid);
         localStorage.setItem('token', resp['token']);
+        // return (resp?true:false);
+        return true; // Si llega aquí, es que tenemos una respuesta, por lo que podemos devolver directamente 'true'
       }),
-      map( (resp) => {
-        return (resp?true:false);
-      }),
-      catchError( error => of (false)) // El "of" es para que devuelva un Observable
+      catchError( error => {
+        console.log(error);
+        return of (false) // El "of" es para que devuelva un Observable
+      })
     );
   }
 }
