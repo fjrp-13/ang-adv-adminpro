@@ -7,10 +7,11 @@ import { FormsModule } from '@angular/forms';
 
 import { IncrementadorComponent } from './incrementador/incrementador.component';
 import { GraphDoughnutComponent } from './graph-doughnut/graph-doughnut.component';
+import { ModalImageComponent } from './modal-image/modal-image.component';
 
 
 @NgModule({
-  declarations: [IncrementadorComponent, GraphDoughnutComponent],
+  declarations: [IncrementadorComponent, GraphDoughnutComponent, ModalImageComponent],
   imports: [
     CommonModule,
     ChartsModule,
@@ -18,7 +19,8 @@ import { GraphDoughnutComponent } from './graph-doughnut/graph-doughnut.componen
   ],
   exports: [
     IncrementadorComponent,
-    GraphDoughnutComponent
+    GraphDoughnutComponent,
+    ModalImageComponent,
   ]
 })
 export class ComponentsModule { }

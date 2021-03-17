@@ -1,0 +1,44 @@
+<div class="imageModal-overlay animated fadeIn fast"
+     [class.hidden]="modalImageService.isHidden">
+    <div class="text-center" style="color:#fff; font-weight: bolder;">
+        <h2>{{!modalImageService.isHidden}}</h2>
+    </div>
+    <div class="modal fade show"
+         id="imageModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="imageModalLabel"
+         style="display: block; padding-right: 17px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="imageModalLabel">Cargar Imagen</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                              aria-hidden="true" (click)="closeModal()">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <h3>seleccione una imagen</h3>
+
+                    <div class="text-center">
+                        <img *ngIf="imageTemp === null" [src]="modalImageService.img"
+                             class="img-avatar border rounded-circle mb-3">
+                        <img *ngIf="imageTemp !== null" [src]="imageTemp"
+                             class="img-avatar border rounded-circle mb-3">
+                    </div>
+                    <input type="file"
+                           (change)="cambiarImagen($event.target.files[0])">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                            (click)="closeModal()">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="updateImage()">Cargar imagen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

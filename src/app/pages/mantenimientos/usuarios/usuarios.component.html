@@ -1,0 +1,111 @@
+<!-- Search input -->
+<div class="row animated fadeIn fast">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <!-- Mi sistema de rutas -->
+                <!-- <router-outlet></router-outlet> -->
+                <input type="text"
+                       class="form-control"
+                       placeholder="Buscar usuario"
+                       (keyup)="searchUsuarios(searchValue.value)"
+                       #searchValue>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading... -->
+<div class="row animated fadeIn fast"
+     *ngIf="loading">
+    <div class="col-12">
+
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">Cargando...</h4>
+            <i class="fa fa-refresh fa-spin fa-2x" aria-hidden="true"></i>
+            <p class="mb-0">Por favor espere</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Table Usuarios -->
+<div class="row animated fadeIn fast"
+     *ngIf="!loading">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Usuarios: {{totalUsuarios}}</h4>
+                <h6 class="card-subtitle">Usuarios registrados en mi aplicación</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="w-100px">Avatar</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th class="w-150px">Role</th>
+                                <th class="w-100px">Auth</th>
+                                <th class="text-nowrap w-100px">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of usuarios">
+                                <td class="text-center">
+                                    <img src="{{usuario.urlUserImage}}"
+                                         class="user-avatar clickable hover-border hover-img-scale hover-img-scale-1_3"
+                                         title="click to edit"
+                                         alt="avatar"
+                                         (click)="openModalImage(usuario)">
+                                </td>
+                                <td>{{usuario.nombre}}</td>
+                                <td>{{usuario.email}}</td>
+                                <!-- <td>{{usuario.role}}</td> -->
+                                <td>
+                                    <select class="form-control"
+                                            [ngClass]="{'saved': uidRoleUpdated == usuario.uid}"
+                                            [(ngModel)]="usuario.role"
+                                            (change)="changeRole(usuario)">
+                                        <option value="ADMIN_ROLE">Admin</option>
+                                        <option value="USER_ROLE">User</option>
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <span *ngIf="usuario.google" class="label label-danger">Google</span>
+                                    <span *ngIf="!usuario.google" class="label label-primary">Email</span>
+
+                                </td>
+                                <td class="text-nowrap text-center">
+                                    <a href="#"
+                                       data-toggle="tooltip"
+                                       data-original-title="Editar">
+                                        <i class="fa fa-pencil text-inverse"></i>
+                                    </a>
+                                    <a *ngIf="usuarioLogeado.uid != usuario.uid"
+                                       data-toggle="tooltip"
+                                       data-original-title="Borrar"
+                                       class="clickable"
+                                       (click)="deleteUsuario(usuario)">
+                                        <i class="fa fa-close m-l-5"
+                                           [ngClass]="{'text-danger': usuarioLogeado.uid != usuario.uid}">
+                                        </i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="searchValue.value.length == 0">
+                    <button class="btn btn-secondary"
+                            [ngClass]="{'disabled': fromUser<=0}"
+                            (click)="prevPage()">Anteriores</button>
+                    <button class="btn btn-secondary mx-2"
+                            [ngClass]="{'disabled': (fromUser + usersPerPage)>=totalUsuarios}"
+                            (click)="nextPage()">Siguientes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

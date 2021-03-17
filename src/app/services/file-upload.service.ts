@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 const api_base_url = environment.api_base_url;
@@ -11,6 +11,8 @@ export class FileUploadService {
 
   constructor() { }
 
+  // Observable: lo usaremos para emitir un string cuando el upload haya ido correctamente
+  // public imageUploaded: EventEmitter<string> = new EventEmitter<string>();
 
   // Hacer el upload con el Fetch API
 

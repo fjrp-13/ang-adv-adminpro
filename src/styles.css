@@ -29,3 +29,77 @@
     width: 150px;
     height: 150px;
 }
+
+.w-100px {
+    width: 100px !important;
+}
+.w-150px {
+    width: 150px !important;
+}
+.user-avatar {
+    /* border: 1px solid #ddd; */
+    width: 40px;
+    border-radius: 100%; 
+}
+
+.form-control.saved {
+    border-color: #0c5802;
+    background-color: #16a302;
+    color: #ffffff;
+}
+
+.hidden {
+    display: none;
+}
+.imageModal-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100%;
+    left: 0px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1024;
+}
+
+.hover-border:hover {
+    border: 1px solid #999999;
+    border: 1px solid #e9ecef;
+}
+
+.hover-img-scale {
+    overflow: hidden;
+    /* margin: 8px;
+    min-width: 240px;
+    max-width: 320px;
+    width: 100%; */
+}
+  
+.hover-img-scale {
+    transition: all 0.3s, border-color 0s;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+.hover-img-scale-1_7:hover {
+    transform: scale(1.7);
+}  
+.hover-img-scale-1_3:hover {
+    transform: scale(1.3);
+}
+
+.xhover-img-scale {
+    overflow: hidden;
+    /* margin: 8px;
+    min-width: 240px;
+    max-width: 320px;
+    width: 100%; */
+}
+  
+.xhover-img-scale {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+  
+.xhover-img-scale:hover {
+    transform: scale(1.3) rotate(5deg);
+}

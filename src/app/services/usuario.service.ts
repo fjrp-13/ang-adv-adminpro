@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone, resolveForwardRef } from '@angular/core';
-import { tap, map, catchError } from 'rxjs/operators'; // tap: dispara un "efecto secundario" (como añadir un paso extra)
+import { tap, map, delay, catchError } from 'rxjs/operators'; // tap: dispara un "efecto secundario" (como añadir un paso extra)
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
+import { LoadUsuarios } from '../interfaces/load-usuarios';
+
 import { Usuario } from '../models/usuario.model';
 
 const api_base_url = environment.api_base_url;
@@ -34,6 +36,15 @@ export class UsuarioService {
   get token(): string {
     return localStorage.getItem('token') || '';;
   }
+
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    };
+  }
+
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${ api_base_url }/usuarios`, formData)
     .pipe(tap(resp => {
@@ -42,11 +53,7 @@ export class UsuarioService {
   }
 
   actualizarPerfil(data:{ email: string, nombre: string }) {
-    return this.http.put(`${ api_base_url }/usuarios/${ this.usuarioLogeado.uid }`, data, {
-      headers: {
-        'x-token': this.token
-      }
-    });
+    return this.http.put(`${ api_base_url }/usuarios/${ this.usuarioLogeado.uid }`, data, this.headers);
   }
 
   // https://developers.google.com/identity/sign-in/web/build-button
@@ -93,11 +100,7 @@ export class UsuarioService {
   }
 
   validateToken():Observable<boolean> {
-    return this.http.get(`${ api_base_url }/login/renew`, {
-      headers: {
-        'x-token': this.token
-      }
-    })
+    return this.http.get(`${ api_base_url }/login/renew`, this.headers)
     .pipe(
       map((resp) => {
         const { nombre, email, img, google, role, uid } = resp['usuario'];
@@ -112,6 +115,68 @@ export class UsuarioService {
         return of (false) // El "of" es para que devuelva un Observable
       })
     );
+  }
+
+  loadUsers(from: number = 0, limit: number = 5) {
+    return this.http.get<LoadUsuarios>(`${ api_base_url }/usuarios?from=${ from }&limit=${ limit}`, this.headers)
+    .pipe(
+      // delay(2*1000),
+      map(resp => {
+        // Creamos un array nuevo de usuarios ...
+        const usuarios = resp.usuarios.map( user => {
+          // ... y con el map cambiamos el objeto por una instancia de la clase Usuario ...
+          return new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid);
+        })
+        // ... devolvemos la respuesta, que ahora contendrá un array de elementos de la clase Usuario
+        return {
+          total: resp.total,
+          usuarios
+        };
+      })
+    )
+  }
+
+  deleteUser(usuario: Usuario) {
+    return this.http.delete(`${ api_base_url }/usuarios/${usuario.uid}`, this.headers)
+    // .pipe(
+    //   // delay(2*1000),
+    //   map(resp => {
+    //     // Creamos un array nuevo de usuarios ...
+    //     const usuarios = resp.usuarios.map( user => {
+    //       // ... y con el map cambiamos el objeto por una instancia de la clase Usuario ...
+    //       return new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid);
+    //     })
+    //     // ... devolvemos la respuesta, que ahora contendrá un array de elementos de la clase Usuario
+    //     return {
+    //       total: resp.total,
+    //       usuarios
+    //     };
+    //   })
+    // )
+  }
+
+  // // Lo movemos al servicio "busquedas"
+  // searchUsers(query: string) {
+  //   // http://localhost:3000/api/search/type/usuarios/mi
+  //   return this.http.get<LoadUsuarios>(`${ api_base_url }/search/type/usuarios?${ query }`, this.headers)
+  //   .pipe(
+  //     map(resp => {
+  //       // Creamos un array nuevo de usuarios ...
+  //       const usuarios = resp.usuarios.map( user => {
+  //         // ... y con el map cambiamos el objeto por una instancia de la clase Usuario ...
+  //         return new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid);
+  //       })
+  //       // ... devolvemos la respuesta, que ahora contendrá un array de elementos de la clase Usuario
+  //       return {
+  //         total: resp.total,
+  //         usuarios
+  //       };
+  //     })
+  //   )
+  // }
+
+  updateUser(usuario: Usuario) {
+    return this.http.put(`${ api_base_url }/usuarios/${usuario.uid}`, usuario, this.headers)
   }
 }
 
