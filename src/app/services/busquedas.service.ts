@@ -4,6 +4,8 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment.prod';
 import { Usuario } from '../models/usuario.model';
+import { Hospital } from '../models/hospital.model';
+import { Medico } from '../models/medico.model';
 
 const api_base_url = environment.api_base_url;
 
@@ -26,11 +28,18 @@ export class BusquedasService {
       }
     };
   }
-
   private transformarUsuarios(data: any[]): Usuario[] {
     return data.map( user => {
       return new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid);
     });
+  }
+
+  private transformarHospitales(data: any[]): Hospital[] {
+    return data;
+  }
+
+  private transformarMedicos(data: any[]): Medico[] {
+    return data;
   }
   
   searchByType(type: 'usuarios'|'medicos'|'hospitales', query: string) {
@@ -41,10 +50,14 @@ export class BusquedasService {
           case 'usuarios':
               resp.data = this.transformarUsuarios(resp.data)
             break;
-        
-          default:
-            return []
+          case 'hospitales':
+              resp.data = this.transformarHospitales(resp.data)
             break;
+          case 'medicos':
+              resp.data = this.transformarMedicos(resp.data)
+              break;
+          // default:
+            // resp.data = [];
         }
         return {
           total: resp.data.length,

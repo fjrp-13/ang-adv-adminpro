@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.prod';
 import { Usuario } from '../models/usuario.model';
+import { Hospital } from '../models/hospital.model';
 
 const api_base_url = environment.api_base_url;
 
@@ -31,6 +32,10 @@ export class ModalImageService {
 
     if (dataElement instanceof Usuario) {
       this.dataElement.type = 'usuarios';
+    } else if (dataElement instanceof Hospital) {
+      this.dataElement.type = 'hospitales';
+    // } else if (dataElement instanceof Medico) {
+    //   this.dataElement.type = 'medicos';
     }
 
     if ( this.dataElement.img.includes('https') ) {
@@ -38,7 +43,6 @@ export class ModalImageService {
     } else {
       this.dataElement.urlImage = `${ api_base_url }/upload/${ this.dataElement.type }/${ this.dataElement.img }`;
     }
-    console.log(this.dataElement);
   }
 
   closeModal() {

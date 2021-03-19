@@ -1,5 +1,5 @@
 export interface RegisterForm {
-    nombre           : string;
+    nombre         : string;
     email          : string;
     password       : string;
     passwordRepeat : string;
