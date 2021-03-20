@@ -54,7 +54,11 @@ export class MedicoComponent implements OnInit, OnDestroy {
     // Nos suscribimos al observable del cambio de foto/imagen
     this.imageSubscription = this.modalImageService.imageUpdated
       .pipe(delay(100))
-      .subscribe(newFilename => { this.medico.img=newFilename;})
+      .subscribe(newFilename => { 
+        // console.log('tick imageSubscription'); // Para controlar si se genera una suscripción c/vez que actualizamos la página.
+                                                  // En ese caso, habría que "de-suscribirse"
+        this.medico.img=newFilename;
+      })
 
     this.loadHospitales();
   }
@@ -96,7 +100,7 @@ export class MedicoComponent implements OnInit, OnDestroy {
             Swal.fire('Guardado', 'Médico guardado', 'success');
             this.router.navigateByUrl(`/dashboard/medico/${this.medico.id}`);
           } else {
-            console.log(resp);
+            // console.log(resp);
             Swal.fire('error', resp.msg, 'error'); 
           }
         }, (err) => {
@@ -114,7 +118,7 @@ export class MedicoComponent implements OnInit, OnDestroy {
           Swal.fire('Guardado', 'Médico guardado', 'success');
           this.router.navigateByUrl(`/dashboard/medico/${this.medico.id}`);
         } else {
-          console.log(resp);
+          // console.log(resp);
           Swal.fire('error', resp.msg, 'error'); 
         }
       }, (err) => {

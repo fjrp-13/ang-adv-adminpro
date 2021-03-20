@@ -66,4 +66,17 @@ export class BusquedasService {
       })
     )
   }
+
+
+  searchGlobal(query: string) {
+    return this.http.get(`${ api_base_url }/search/${ query }`, this.headers)
+    .pipe(
+      map((resp: any) => {
+        return {
+          data: resp
+        };
+      })
+    )
+  }
+
 }

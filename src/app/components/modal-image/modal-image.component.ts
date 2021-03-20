@@ -45,7 +45,7 @@ export class ModalImageComponent implements OnInit {
     this.fileUploadService.actualizarFoto(this.imageFile, this.modalImageService.type, this.modalImageService.id)
     .then(resp => {
       if (resp.success === true) {
-        console.log(resp);
+        // console.log(resp);
         // this.usuario.img = resp.newFilename;
         this.imageTemp = null;
         this.modalImageService.imageUpdated.emit(resp.newFilename);

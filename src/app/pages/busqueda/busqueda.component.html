@@ -1,0 +1,115 @@
+<div class="row animated fadeIn fast">
+    <!-- Usuarios -->
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Usuarios</h3>
+                <div
+                     *ngIf="usuarios.length === 0"
+                     class="alert alert-info animated fadeIn fast"
+                     role="alert">
+                    <p class="mb-0">No se han encontrado usuarios</p>
+                </div>
+                <div
+                     *ngIf="usuarios.length !== 0"
+                     class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of usuarios"
+                                class="animated fadeIn fast">
+                                <td>
+                                    <img src="{{usuario.img | imagen:'usuarios'}}"
+                                         class="user-avatar">
+                                </td>
+                                <td>{{usuario.nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Médicos -->
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Médicos</h3>
+                <div
+                     *ngIf="medicos.length === 0"
+                     class="alert alert-info animated fadeIn fast"
+                     role="alert">
+                    <p class="mb-0">No se han encontrado médicos</p>
+                </div>
+                <div
+                     *ngIf="medicos.length !== 0"
+                     class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let medico of medicos"
+                                class="animated fadeIn fast">
+                                <td>
+                                    <img src="{{medico.img | imagen:'medicos'}}"
+                                         class="user-avatar">
+                                </td>
+                                <td>
+                                    <a [routerLink]="['../../medico', medico.id]">{{medico.nombre}}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Hospitales -->
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Hospitales</h3>
+                <div
+                     *ngIf="hospitales.length === 0"
+                     class="alert alert-info animated fadeIn fast"
+                     role="alert">
+                    <p class="mb-0">No se han encontrado hospitales</p>
+                </div>
+                <div *ngIf="hospitales.length !== 0"
+                     class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let hospital of hospitales"
+                                class="animated fadeIn fast">
+                                <td>
+                                    <img src="{{hospital.img | imagen:'hospitales'}}"
+                                         class="user-avatar">
+                                </td>
+                                <td>{{hospital.nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

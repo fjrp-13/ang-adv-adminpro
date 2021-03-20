@@ -37,7 +37,7 @@ export class PromesasComponent implements OnInit {
 
     // // Llamada para V3
     this.getUsuarios().then(usuarios => {
-      console.log(usuarios);
+      // console.log(usuarios);
       this.usuarios = usuarios;
     });
   }

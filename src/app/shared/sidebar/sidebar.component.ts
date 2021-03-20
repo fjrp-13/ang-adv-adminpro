@@ -12,12 +12,12 @@ import { Usuario } from '../../models/usuario.model';
 })
 export class SidebarComponent implements OnInit {
 
-  public menuItems: any[];
+  // public menuItems: any[]; // Hacemos el "sidebarService" público y lo utilizaremos directamente (para que coja correctamente el menú desde el LocalStorage)
   public usuario: Usuario;
 
-  constructor(private sidebarService: SidebarService,
+  constructor(public sidebarService: SidebarService,
               private usuarioService: UsuarioService,) {
-    this.menuItems = sidebarService.menu;
+    // this.menuItems = sidebarService.menu;
     this.usuario = usuarioService.usuarioLogeado;
   }
 

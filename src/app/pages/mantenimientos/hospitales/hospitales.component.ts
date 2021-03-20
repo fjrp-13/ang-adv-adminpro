@@ -49,7 +49,6 @@ export class HospitalesComponent implements OnInit, OnDestroy {
   }
 
   searchHospitales(query: string) {
-    console.log(query);
     if (query.trim().length == 0) {
       // this.hospitales = this.hospitalesBackup;
       this.loadHospitales();

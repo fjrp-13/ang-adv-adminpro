@@ -37,6 +37,10 @@ export class UsuarioService {
     return localStorage.getItem('token') || '';;
   }
 
+  get role(): string {
+    return this.usuarioLogeado.role;
+  }
+
   get headers() {
     return {
       headers: {
@@ -45,10 +49,23 @@ export class UsuarioService {
     };
   }
 
+  saveLocalStorage(token: string, menu: any) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
+  clearLocalStorage() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('menu');
+  }
+
+
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${ api_base_url }/usuarios`, formData)
     .pipe(tap(resp => {
-      localStorage.setItem('token', resp['token']);
+      // localStorage.setItem('token', resp['token']);
+      // localStorage.setItem('menu', resp['menu']);
+      this.saveLocalStorage(resp['token'], resp['menu']);
     }));
   }
 
@@ -78,19 +95,26 @@ export class UsuarioService {
   login(formData: LoginForm) {
     return this.http.post(`${ api_base_url }/login`, formData)
     .pipe(tap(resp => {
-      localStorage.setItem('token', resp['token']);
+      // localStorage.setItem('token', resp['token']);
+      // localStorage.setItem('menu', resp['menu']);
+      this.saveLocalStorage(resp['token'], resp['menu']);
     }));
   }
 
   loginGoogle(token) {
     return this.http.post(`${ api_base_url }/login/google`, {token})
     .pipe(tap(resp => {
-      localStorage.setItem('token', resp['token']);
+      // localStorage.setItem('token', resp['token']);
+      // localStorage.setItem('menu', resp['menu']);
+      this.saveLocalStorage(resp['token'], resp['menu']);
     }));
   }
   
   logout() {
-    localStorage.removeItem('token');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('menu');
+    this.clearLocalStorage();
+
     this.auth2.signOut().then(() => { // Cambiado a función de flecha para que "this" no se cambie y haga referencia a la propia clase
       this.ngZone.run(() => {
         // Usamos ngZone para que se ejecuten procesos de Angular desde el Google Auth
@@ -106,7 +130,11 @@ export class UsuarioService {
         const { nombre, email, img, google, role, uid } = resp['usuario'];
         // Instanciamos el usuario Logeado con el usuario devuelto 
         this.usuarioLogeado = new Usuario(nombre, email, '', img, google, role, uid);
-        localStorage.setItem('token', resp['token']);
+
+        // localStorage.setItem('token', resp['token']);
+        // localStorage.setItem('menu', resp['menu']);
+        this.saveLocalStorage(resp['token'], resp['menu']);
+        
         // return (resp?true:false);
         return true; // Si llega aquí, es que tenemos una respuesta, por lo que podemos devolver directamente 'true'
       }),
